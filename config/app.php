@@ -195,6 +195,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+        * External Api Consume
+        */
+        App\Providers\ExternalApiProvider::class,
+
     ],
 
     /*
