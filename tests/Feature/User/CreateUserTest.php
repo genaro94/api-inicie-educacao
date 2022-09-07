@@ -135,4 +135,18 @@ class CreateUserTest extends TestCase
         ->assertJson(['message' => "status can't be blank"]);
     }
 
+    public function test_create_user_with_token_invalid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer 1234567890')
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => fake()->unique()->email(),
+            'gender' => Arr::random($this->gender),
+            'status' => Arr::random($this->status),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "Authentication failed"]);
+    }
+
 }
