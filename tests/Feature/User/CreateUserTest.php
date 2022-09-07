@@ -93,4 +93,32 @@ class CreateUserTest extends TestCase
         ->assertJson(['message' => "gender can't be blank, can be male or female"]);
     }
 
+    public function test_field_gender_filled_in_without_male_or_female(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => fake()->unique()->email(),
+            'gender' => "abcd",
+            'status' => Arr::random($this->status),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "gender can't be blank, can be male or female"]);
+    }
+
+    public function test_field_status_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => fake()->unique()->email(),
+            'gender' => Arr::random($this->gender),
+            'status' => null,
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "status can't be blank"]);
+    }
+
 }
