@@ -1,5 +1,6 @@
 <?php
 
 Route::group(['prefix' => 'users', 'namespace' => 'Api\\'], function () {
-    Route::resource('/', 'UserController');
+    Route::post('/', 'UserController@store');
+    Route::get('/{page?}', 'UserController@index');
 });
