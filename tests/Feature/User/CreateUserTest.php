@@ -42,4 +42,18 @@ class CreateUserTest extends TestCase
         $response->assertStatus(401)
         ->assertJson(['message' => "name can't be blank"]);
     }
+
+    public function test_field_email_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => null,
+            'gender' => Arr::random($this->gender),
+            'status' => Arr::random($this->status),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "email can't be blank"]);
+    }
 }
