@@ -12,7 +12,7 @@ class CreateUserTest extends TestCase
     private $status = ['active', 'inactive'];
     private $gender = ['female', 'male'];
 
-    public function test_create_user(): void
+    public function test_create_user_with_success(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
