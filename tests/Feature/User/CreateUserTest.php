@@ -78,4 +78,19 @@ class CreateUserTest extends TestCase
         $response->assertStatus(401)
         ->assertJson(['message' => "email has already been taken"]);
     }
+
+    public function test_field_gender_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => fake()->unique()->email(),
+            'gender' => null,
+            'status' => Arr::random($this->status),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "gender can't be blank, can be male or female"]);
+    }
+
 }
