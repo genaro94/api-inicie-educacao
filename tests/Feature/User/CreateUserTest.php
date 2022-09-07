@@ -121,4 +121,18 @@ class CreateUserTest extends TestCase
         ->assertJson(['message' => "status can't be blank"]);
     }
 
+    public function test_field_status_filled_in_without_active_or_inactive(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => fake()->name(),
+            'email'  => fake()->unique()->email(),
+            'gender' => Arr::random($this->gender),
+            'status' => "abcd",
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "status can't be blank"]);
+    }
+
 }
