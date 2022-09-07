@@ -28,4 +28,18 @@ class CreateUserTest extends TestCase
             'user'    => $response->original['user']
         ]);
     }
+
+    public function test_field_name_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users', [
+            'name'   => null,
+            'email'  => fake()->unique()->email(),
+            'gender' => Arr::random($this->gender),
+            'status' => Arr::random($this->status),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "name can't be blank"]);
+    }
 }
