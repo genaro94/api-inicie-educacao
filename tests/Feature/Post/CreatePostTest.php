@@ -26,7 +26,7 @@ class CreatePostTest extends TestCase
         ->post('/api/posts', [
            'user_id'  => $user['user']['id'],
            'title'    => fake()->text(),
-           'body'     => fake()->title()
+           'body'     => fake()->text()
         ]);
 
         $response->assertStatus(201)
@@ -42,12 +42,23 @@ class CreatePostTest extends TestCase
         ->post('/api/posts', [
            'user_id'  => null,
            'title'    => fake()->text(),
-           'body'     => fake()->title()
+           'body'     => fake()->text()
         ]);
 
         $response->assertStatus(401)
         ->assertJson(['message' => "user must exist"]);
     }
 
-    //TODO
+    public function test_field_user_id_is_number_and_exist(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/posts', [
+           'user_id'  => "abc123",
+           'title'    => fake()->text(),
+           'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "user must exist"]);
+    }
 }
