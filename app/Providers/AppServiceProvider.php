@@ -15,13 +15,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(
-            'App\Http\Interfaces\IUserCreation',
-            'App\Application\UserCreation',
+            'App\Http\Interfaces\User\IUserCreation',
+            'App\Application\User\UserCreation',
         );
 
         $this->app->bind(
-            'App\Http\Interfaces\IUserListing',
-            'App\Application\UserListing',
+            'App\Http\Interfaces\User\IUserListing',
+            'App\Application\User\UserListing',
         );
     }
 }

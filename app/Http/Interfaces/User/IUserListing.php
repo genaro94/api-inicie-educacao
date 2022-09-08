@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Interfaces;
+namespace App\Http\Interfaces\User;
 
 use Illuminate\Http\Request;
 
-interface IUserCreation
+interface IUserListing
 {
     function execute(Request $request): array;
 }
