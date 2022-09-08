@@ -87,4 +87,17 @@ class CreatePostTest extends TestCase
         $response->assertStatus(401)
         ->assertJson(['message' => "body can't be blank"]);
     }
+
+    public function test_create_post_with_token_invalid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer 1234567890')
+        ->post('/api/posts', [
+            'user_id'  => 2752,
+            'title'    => fake()->text(),
+            'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "Authentication failed"]);
+    }
 }
