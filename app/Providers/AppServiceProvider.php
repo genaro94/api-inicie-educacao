@@ -18,5 +18,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Http\Interfaces\IUserCreation',
             'App\Application\UserCreation',
         );
+
+        $this->app->bind(
+            'App\Http\Interfaces\IUserListing',
+            'App\Application\UserListing',
+        );
     }
 }
