@@ -61,4 +61,17 @@ class CreatePostTest extends TestCase
         $response->assertStatus(401)
         ->assertJson(['message' => "user must exist"]);
     }
+
+    public function test_field_title_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/posts', [
+           'user_id'  => 2752,
+           'title'    => null,
+           'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "title can't be blank"]);
+    }
 }
