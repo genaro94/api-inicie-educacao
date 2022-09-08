@@ -35,4 +35,19 @@ class CreatePostTest extends TestCase
             'post'    => $response->original['post']
         ]);
     }
+
+    public function test_field_user_id_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/posts', [
+           'user_id'  => null,
+           'title'    => fake()->text(),
+           'body'     => fake()->title()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "user must exist"]);
+    }
+
+    //TODO
 }
