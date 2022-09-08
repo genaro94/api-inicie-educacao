@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application;
+namespace App\Application\User;
 
-use App\Http\Interfaces\IUserListing;
+use App\Http\Interfaces\User\IUserListing;
 use App\Facades\ExternalApiFacade;
 use Illuminate\Http\Request;
 use Exception;

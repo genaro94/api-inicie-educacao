@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Interfaces\IUserCreation;
-use App\Http\Interfaces\IUserListing;
+use App\Http\Interfaces\User\IUserCreation;
+use App\Http\Interfaces\User\IUserListing;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
