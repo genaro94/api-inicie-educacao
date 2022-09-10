@@ -11,10 +11,6 @@ class UserListing implements IUserListing
 {
     function execute(Request $request): array
     {
-        $response = ExternalApiFacade::withToken($request->bearerToken())
-        ->get('/users' .'/'.$request->id .'?page='.$request->page)
-        ->json();
-
-        return $response;
+        return ExternalApiFacade::get('/users' .'/'.$request->id.'?page='. $request->page)->json();
     }
 }

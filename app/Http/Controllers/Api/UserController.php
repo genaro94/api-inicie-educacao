@@ -21,8 +21,8 @@ class UserController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $list = $this->userListingFilterById->execute($request);
+        $response = $this->userListingFilterById->execute($request);
 
-        return response()->json(['data' => $list], Response::HTTP_OK);
+        return response()->json($response, $response['code']);
     }
 }
