@@ -85,4 +85,20 @@ class CreateCommentListPostTest extends TestCase
             'message' => "status can't be blank, can be pending or completed"
         ]);
     }
+
+    public function test_field_token_is_valid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . '123456790')
+        ->post('/api/comments/store/list/posts', [
+           'user_id'  => 2752,
+           'title'    => fake()->text(),
+           'due_on'   => \Carbon\Carbon::today(),
+           'status'   => Arr::random($this->commentStatus),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson([
+            'message' => "Authentication failed"
+        ]);
+    }
 }
