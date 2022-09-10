@@ -69,4 +69,20 @@ class CreateCommentListPostTest extends TestCase
             'message' => "title can't be blank"
         ]);
     }
+
+    public function test_field_status_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments/store/list/posts', [
+           'user_id'  => 2752,
+           'title'    => fake()->text(),
+           'due_on'   => \Carbon\Carbon::today(),
+           'status'   => null,
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson([
+            'message' => "status can't be blank, can be pending or completed"
+        ]);
+    }
 }
