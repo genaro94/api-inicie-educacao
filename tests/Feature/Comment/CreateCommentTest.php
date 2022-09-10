@@ -70,4 +70,18 @@ class CreateCommentTest extends TestCase
         $response->assertStatus(401)
         ->assertJson(['message' => "email can't be blank, is invalid"]);
     }
+
+    public function test_field_email_is_valid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments', [
+            'post_id'  => 1566,
+            'name'     => fake()->name(),
+            'email'    => "email.test",
+            'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "email is invalid"]);
+    }
 }
