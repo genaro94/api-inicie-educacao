@@ -43,6 +43,7 @@ class CreateCommentTest extends TestCase
             'comment' => $response->original['comment']
         ]);
     }
+
     public function test_field_post_id_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -83,5 +84,19 @@ class CreateCommentTest extends TestCase
 
         $response->assertStatus(401)
         ->assertJson(['message' => "email is invalid"]);
+    }
+
+    public function test_field_body_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments', [
+            'post_id'  => 1566,
+            'name'     => fake()->name(),
+            'email'    => fake()->email(),
+            'body'     => null
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "body can't be blank"]);
     }
 }
