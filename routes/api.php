@@ -8,3 +8,7 @@ Route::group(['prefix' => 'users'], function () {
 Route::group(['prefix' => 'posts'], function () {
     Route::resource('/', 'PostController');
 });
+
+Route::group(['prefix' => 'comments'], function () {
+    Route::resource('/', 'CommentController');
+});

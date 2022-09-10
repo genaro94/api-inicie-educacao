@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Http\Interfaces\Post\IPostCreation',
             'App\Application\Post\PostCreation',
         );
+
+        $this->app->bind(
+            'App\Http\Interfaces\Comment\ICommentCreation',
+            'App\Application\Comment\CommentCreation',
+        );
     }
 }
