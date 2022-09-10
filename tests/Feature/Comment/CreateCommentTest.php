@@ -33,7 +33,7 @@ class CreateCommentTest extends TestCase
         ->post('/api/comments', [
            'post_id'  => $post['post']['id'],
            'name'     => fake()->name(),
-           'email'    => fake()->unique()->email(),
+           'email'    => fake()->email(),
            'body'     => fake()->text()
         ]);
 
@@ -42,5 +42,18 @@ class CreateCommentTest extends TestCase
             'message' => 'Comment created successfully!',
             'comment' => $response->original['comment']
         ]);
+    }
+    public function test_field_post_id_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments', [
+            'post_id'  => null,
+            'name'     => fake()->name(),
+            'email'    => fake()->email(),
+            'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson(['message' => "post must exist"]);
     }
 }
