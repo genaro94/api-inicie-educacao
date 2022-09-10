@@ -11,4 +11,5 @@ Route::group(['prefix' => 'posts'], function () {
 
 Route::group(['prefix' => 'comments'], function () {
     Route::resource('/', 'CommentController');
+    Route::post('/store/list/posts', 'CommentController@storeListPosts');
 });
