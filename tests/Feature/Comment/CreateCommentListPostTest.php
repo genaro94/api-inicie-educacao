@@ -37,4 +37,20 @@ class CreateCommentListPostTest extends TestCase
             'comment' => $response->original['comment']
         ]);
     }
+
+    public function test_field_user_id_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments/store/list/posts', [
+           'user_id'  => null,
+           'title'    => fake()->text(),
+           'due_on'   => \Carbon\Carbon::today(),
+           'status'   => Arr::random($this->commentStatus),
+        ]);
+
+        $response->assertStatus(401)
+        ->assertJson([
+            'message' => 'user must exist'
+        ]);
+    }
 }
