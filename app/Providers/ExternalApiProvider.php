@@ -13,7 +13,7 @@ class ExternalApiProvider extends ServiceProvider
         $this->app->bind('api-inicie-educacao', function() {
             return Http::withOptions([
                 'verify'   => false,
-                'base_uri' => 'https://gorest.co.in/public/v2/'
+                'base_uri' => 'https://gorest.co.in/public-api/'
             ]);
         });
     }
