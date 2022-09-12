@@ -1,7 +1,8 @@
 <?php
 
 Route::group(['prefix' => 'users'], function () {
-    Route::resource('/', 'UserController');
+    Route::post('/', 'UserController@store');
+    Route::get('/{id?}', 'UserController@index');
 });
 
 Route::group(['prefix' => 'posts'], function () {

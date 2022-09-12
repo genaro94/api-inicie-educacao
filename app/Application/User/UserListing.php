@@ -9,8 +9,8 @@ use Exception;
 
 class UserListing implements IUserListing
 {
-    function execute(Request $request): array
+    function execute(Request $request, string $userId): array
     {
-        return ExternalApiFacade::get('/users' .'/'.$request->id.'?page='. $request->page)->json();
+        return ExternalApiFacade::get('/users' .'/'.$userId. '?page='. $request->page)->json();
     }
 }
