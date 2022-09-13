@@ -25,7 +25,7 @@ class CreateCommentListPostTest extends TestCase
 
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => $user['user']['id'],
+           'user_id'  => $user['data']['id'],
            'title'    => fake()->text(),
            'due_on'   => \Carbon\Carbon::today(),
            'status'   => Arr::random($this->commentStatus),
@@ -33,8 +33,9 @@ class CreateCommentListPostTest extends TestCase
 
         $response->assertStatus(201)
         ->assertJson([
-            'message' => 'Comment created successfully!',
-            'comment' => $response->original['comment']
+            'code'    => 201,
+            'meta'    => null,
+            'data'    => $response->original['data']
         ]);
     }
 
@@ -48,9 +49,20 @@ class CreateCommentListPostTest extends TestCase
            'status'   => Arr::random($this->commentStatus),
         ]);
 
-        $response->assertStatus(401)
+        $response->assertStatus(422)
         ->assertJson([
-            'message' => 'user must exist'
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "user",
+                    "message" => "must exist"
+                ],
+                [
+                    "field"   => "user_id",
+                    "message" => "is not a number"
+                ]
+            ]
         ]);
     }
 
@@ -64,9 +76,16 @@ class CreateCommentListPostTest extends TestCase
            'status'   => Arr::random($this->commentStatus),
         ]);
 
-        $response->assertStatus(401)
+        $response->assertStatus(422)
         ->assertJson([
-            'message' => "title can't be blank"
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "title",
+                    "message" => "can't be blank"
+                ],
+            ]
         ]);
     }
 
@@ -80,9 +99,16 @@ class CreateCommentListPostTest extends TestCase
            'status'   => null,
         ]);
 
-        $response->assertStatus(401)
+        $response->assertStatus(422)
         ->assertJson([
-            'message' => "status can't be blank, can be pending or completed"
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "status",
+                    "message" => "can't be blank, can be pending or completed"
+                ]
+            ]
         ]);
     }
 
@@ -98,7 +124,11 @@ class CreateCommentListPostTest extends TestCase
 
         $response->assertStatus(401)
         ->assertJson([
-            'message' => "Authentication failed"
+            'code'    => 401,
+            'meta'    => null,
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
         ]);
     }
 }

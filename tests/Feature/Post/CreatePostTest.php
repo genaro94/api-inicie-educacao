@@ -50,7 +50,16 @@ class CreatePostTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"    => "user",
+                    "message"  => "must exist"
+                ],
+                [
+                    "field"    => "user_id",
+                    "message"  => "is not a number"
+                ]
+            ]
         ]);
     }
 
@@ -67,7 +76,12 @@ class CreatePostTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"   => "title",
+                    "message" => "can't be blank"
+                ]
+            ]
         ]);
     }
 
@@ -84,7 +98,12 @@ class CreatePostTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"   => "body",
+                    "message" => "can't be blank"
+                ]
+            ]
         ]);
     }
 
@@ -101,7 +120,9 @@ class CreatePostTest extends TestCase
         ->assertJson([
             'code'    => 401,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
         ]);
     }
 }

@@ -124,7 +124,7 @@ class CreateUserTest extends TestCase
             'data'    => [
                 [
                     'field'    => 'gender',
-                    'message'  => "can't be blank, can be male or female"
+                    'message'  => "can't be blank, can be male of female"
                 ]
             ]
         ]);
@@ -147,7 +147,7 @@ class CreateUserTest extends TestCase
             'data'    => [
                 [
                     'field'    => 'gender',
-                    'message'  => "can't be blank, can be male or female"
+                    'message'  => "can't be blank, can be male of female"
                 ]
             ]
         ]);

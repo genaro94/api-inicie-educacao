@@ -59,7 +59,39 @@ class CreateCommentTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"    => "post",
+                    "message"  => "must exist"
+                ],
+                [
+                    "field"    => "post_id",
+                    "message"  => "is not a number"
+                ]
+            ]
+        ]);
+    }
+
+    public function test_field_name_is_required(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/comments', [
+            'post_id'  => 1566,
+            'name'     => null,
+            'email'    => fake()->name(),
+            'body'     => fake()->text()
+        ]);
+
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "name",
+                    "message" => "can't be blank"
+                ]
+            ]
         ]);
     }
 
@@ -77,11 +109,16 @@ class CreateCommentTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"   => "email",
+                    "message" => "can't be blank, is invalid"
+                ]
+            ]
         ]);
     }
 
-    public function test_field_email_is_valid(): void
+    public function test_field_email_format_is_valid(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments', [
@@ -95,7 +132,12 @@ class CreateCommentTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"    => "email",
+                    "message"  => "is invalid"
+                ]
+            ]
         ]);
     }
 
@@ -113,7 +155,12 @@ class CreateCommentTest extends TestCase
         ->assertJson([
             'code'    => 422,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                [
+                    "field"   => "body",
+                    "message" => "can't be blank"
+                ]
+            ]
         ]);
     }
 
@@ -131,7 +178,9 @@ class CreateCommentTest extends TestCase
         ->assertJson([
             'code'    => 401,
             'meta'    => null,
-            'data'    => $response->original['data']
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
         ]);
     }
 }

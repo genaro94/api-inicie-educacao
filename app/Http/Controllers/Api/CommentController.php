@@ -22,18 +22,9 @@ class CommentController extends Controller
 
     public function storeListPosts(Request $request): JsonResponse
     {
-        try
-        {
-            $comment = $this->commentCreationListPosts->execute($request);
 
-            return response()->json([
-                'message' => 'Comment created successfully!',
-                'comment' => $comment
-            ], Response::HTTP_CREATED);
-        }
-        catch (Exception $exception)
-        {
-            return response()->json(['message' => $exception->getMessage() ], Response::HTTP_UNAUTHORIZED);
-        }
+        $response = $this->commentCreationListPosts->execute($request);
+
+        return response()->json($response, $response['code']);
     }
 }
