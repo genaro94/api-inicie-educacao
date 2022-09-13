@@ -24,14 +24,14 @@ class CreateCommentTest extends TestCase
 
         $post = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/posts', [
-           'user_id'  => $user['user']['id'],
+           'user_id'  => $user['data']['id'],
            'title'    => fake()->text(),
            'body'     => fake()->text()
         ]);
 
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments', [
-           'post_id'  => $post['post']['id'],
+           'post_id'  => $post['data']['id'],
            'name'     => fake()->name(),
            'email'    => fake()->email(),
            'body'     => fake()->text()
@@ -39,8 +39,9 @@ class CreateCommentTest extends TestCase
 
         $response->assertStatus(201)
         ->assertJson([
-            'message' => 'Comment created successfully!',
-            'comment' => $response->original['comment']
+            'code'    => 201,
+            'meta'    => null,
+            'data'    => $response->original['data']
         ]);
     }
 
@@ -54,8 +55,12 @@ class CreateCommentTest extends TestCase
             'body'     => fake()->text()
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "post must exist"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => $response->original['data']
+        ]);
     }
 
     public function test_field_email_is_required(): void
@@ -68,8 +73,12 @@ class CreateCommentTest extends TestCase
             'body'     => fake()->text()
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "email can't be blank, is invalid"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => $response->original['data']
+        ]);
     }
 
     public function test_field_email_is_valid(): void
@@ -82,8 +91,12 @@ class CreateCommentTest extends TestCase
             'body'     => fake()->text()
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "email is invalid"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => $response->original['data']
+        ]);
     }
 
     public function test_field_body_is_required(): void
@@ -96,7 +109,29 @@ class CreateCommentTest extends TestCase
             'body'     => null
         ]);
 
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => $response->original['data']
+        ]);
+    }
+
+    public function test_create_comment_with_token_invalid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer 1234567890')
+        ->post('/api/comments', [
+            'post_id'  => 1566,
+            'name'     => fake()->name(),
+            'email'    => fake()->email(),
+            'body'     => fake()->text()
+        ]);
+
         $response->assertStatus(401)
-        ->assertJson(['message' => "body can't be blank"]);
+        ->assertJson([
+            'code'    => 401,
+            'meta'    => null,
+            'data'    => $response->original['data']
+        ]);
     }
 }
