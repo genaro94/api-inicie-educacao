@@ -24,19 +24,20 @@ class CreatePostTest extends TestCase
 
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/posts', [
-           'user_id'  => $user['user']['id'],
+           'user_id'  => $user['data']['id'],
            'title'    => fake()->text(),
            'body'     => fake()->text()
         ]);
 
         $response->assertStatus(201)
         ->assertJson([
-            'message' => 'Post created successfully!',
-            'post'    => $response->original['post']
+            'code'    => 201,
+            'meta'    => null,
+            'data'    => $response->original['data']
         ]);
     }
 
-    public function test_field_user_id_is_required(): void
+    public function test_field_user_id_is_required_and_number(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/posts', [
@@ -45,24 +46,24 @@ class CreatePostTest extends TestCase
            'body'     => fake()->text()
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "user must exist"]);
-    }
-
-    public function test_field_user_id_is_number_and_exist(): void
-    {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => "abc123",
-           'title'    => fake()->text(),
-           'body'     => fake()->text()
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"    => "user",
+                    "message"  => "must exist"
+                ],
+                [
+                    "field"    => "user_id",
+                    "message"  => "is not a number"
+                ]
+            ]
         ]);
-
-        $response->assertStatus(401)
-        ->assertJson(['message' => "user must exist"]);
     }
 
-    public function test_field_title_is_required(): void
+    public function test_post_field_title_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/posts', [
@@ -71,11 +72,20 @@ class CreatePostTest extends TestCase
            'body'     => fake()->text()
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "title can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "title",
+                    "message" => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
-    public function test_field_body_is_required(): void
+    public function test_post_field_body_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/posts', [
@@ -84,8 +94,17 @@ class CreatePostTest extends TestCase
            'body'     => null
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "body can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    "field"   => "body",
+                    "message" => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
     public function test_create_post_with_token_invalid(): void
@@ -98,6 +117,12 @@ class CreatePostTest extends TestCase
         ]);
 
         $response->assertStatus(401)
-        ->assertJson(['message' => "Authentication failed"]);
+        ->assertJson([
+            'code'    => 401,
+            'meta'    => null,
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
+        ]);
     }
 }

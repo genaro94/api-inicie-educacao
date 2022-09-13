@@ -24,12 +24,13 @@ class CreateUserTest extends TestCase
 
         $response->assertStatus(201)
         ->assertJson([
-            'message' => 'User created successfully!',
-            'user'    => $response->original['user']
+            'code'    => 201,
+            'meta'    => null,
+            'data'    => $response->original['data']
         ]);
     }
 
-    public function test_field_name_is_required(): void
+    public function test_field_name_user_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
@@ -39,11 +40,20 @@ class CreateUserTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "name can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'name',
+                    'message'  => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
-    public function test_field_email_is_required(): void
+    public function test_field_email_user_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
@@ -53,11 +63,20 @@ class CreateUserTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "email can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'email',
+                    'message'  => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
-    public function test_field_email_is_unique(): void
+    public function test_field_email_user_is_unique(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
@@ -75,11 +94,20 @@ class CreateUserTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "email has already been taken"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'email',
+                    'message'  => "has already been taken"
+                ]
+            ]
+        ]);
     }
 
-    public function test_field_gender_is_required(): void
+    public function test_field_gender_user_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
@@ -89,8 +117,17 @@ class CreateUserTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "gender can't be blank, can be male or female"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'gender',
+                    'message'  => "can't be blank, can be male of female"
+                ]
+            ]
+        ]);
     }
 
     public function test_field_gender_filled_in_without_male_or_female(): void
@@ -103,11 +140,20 @@ class CreateUserTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "gender can't be blank, can be male or female"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'gender',
+                    'message'  => "can't be blank, can be male of female"
+                ]
+            ]
+        ]);
     }
 
-    public function test_field_status_is_required(): void
+    public function test_field_status_user_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/users', [
@@ -117,8 +163,17 @@ class CreateUserTest extends TestCase
             'status' => null,
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "status can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'status',
+                    'message'  => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
     public function test_field_status_filled_in_without_active_or_inactive(): void
@@ -131,8 +186,17 @@ class CreateUserTest extends TestCase
             'status' => "abcd",
         ]);
 
-        $response->assertStatus(401)
-        ->assertJson(['message' => "status can't be blank"]);
+        $response->assertStatus(422)
+        ->assertJson([
+            'code'    => 422,
+            'meta'    => null,
+            'data'    => [
+                [
+                    'field'    => 'status',
+                    'message'  => "can't be blank"
+                ]
+            ]
+        ]);
     }
 
     public function test_create_user_with_token_invalid(): void
@@ -146,7 +210,13 @@ class CreateUserTest extends TestCase
         ]);
 
         $response->assertStatus(401)
-        ->assertJson(['message' => "Authentication failed"]);
+        ->assertJson([
+            'code'    => 401,
+            'meta'    => null,
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
+        ]);
     }
 
 }
