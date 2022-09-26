@@ -56,4 +56,19 @@ class DestroyCommentTest extends TestCase
             ]
         ]);
     }
+
+    public function test_destroy_comment_with_token_invalid(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer 1234567890' )
+        ->delete('/api/comments/123');
+
+        $response->assertStatus(401)
+        ->assertJson([
+            'code'    => 401,
+            'meta'    => null,
+            'data'    => [
+                'message'  => "Authentication failed"
+            ]
+        ]);
+    }
 }
