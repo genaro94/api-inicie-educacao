@@ -23,8 +23,7 @@ class CreatePostTest extends TestCase
         ]);
 
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => $user['data']['id'],
+        ->post('/api/users'.'/'. $user['data']['id'] .'/posts', [
            'title'    => fake()->text(),
            'body'     => fake()->text()
         ]);
@@ -37,37 +36,10 @@ class CreatePostTest extends TestCase
         ]);
     }
 
-    public function test_field_user_id_is_required_and_number(): void
-    {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => null,
-           'title'    => fake()->text(),
-           'body'     => fake()->text()
-        ]);
-
-        $response->assertStatus(422)
-        ->assertJson([
-            'code'    => 422,
-            'meta'    => null,
-            'data'    => [
-                [
-                    "field"    => "user",
-                    "message"  => "must exist"
-                ],
-                [
-                    "field"    => "user_id",
-                    "message"  => "is not a number"
-                ]
-            ]
-        ]);
-    }
-
     public function test_post_field_title_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => 2752,
+        ->post('/api/users/123/posts', [
            'title'    => null,
            'body'     => fake()->text()
         ]);
@@ -88,8 +60,7 @@ class CreatePostTest extends TestCase
     public function test_post_field_body_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => 2752,
+        ->post('/api/users/123/posts', [
            'title'    => fake()->text(),
            'body'     => null
         ]);
@@ -110,8 +81,8 @@ class CreatePostTest extends TestCase
     public function test_create_post_with_token_invalid(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer 1234567890')
-        ->post('/api/posts', [
-            'user_id'  => 2752,
+        ->post('/api/users/123/posts', [
+
             'title'    => fake()->text(),
             'body'     => fake()->text()
         ]);

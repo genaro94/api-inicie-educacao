@@ -11,9 +11,9 @@ class PostController extends Controller
 {
     public function __construct(private IPostCreation $postCreation) {}
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, int $id): JsonResponse
     {
-        $response = $this->postCreation->execute($request);
+        $response = $this->postCreation->execute($request, $id);
 
         return response()->json($response, $response['code']);
     }

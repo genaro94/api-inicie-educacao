@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 
 class PostCreation implements IPostCreation
 {
-    function execute(Request $request): array
+    function execute(Request $request, int $id): array
     {
         return ExternalApiFacade::withToken($request->bearerToken())
-        ->post('/posts', [
-            'user_id' => $request->user_id,
+        ->post('/users'. '/'. $id .'/posts', [
             'title'   => $request->title,
             'body'    => $request->body,
         ])->json();
