@@ -1,64 +1,269 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Inicie Educação Challenge
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### 🚀Sobre o Projeto
 
-## About Laravel
+Esta é uma API REST criada com o Laravel no qual disponibiliza a criação de posts, comentários de usuário em um blog.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 💻Tecnologias
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Além das ferramentas abaixo, esta aplicação foi desenvolvida com as melhores práticas de desenvolvimento do mercado!
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Laravel
+* SOLID
+* TDD
+* Docker
 
-## Learning Laravel
+### 📚Guia de Instalação e Execução
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Pré-requisitos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* [Git](https://git-scm.com/https:/)
+* [Composer](https://getcomposer.org/https:/)
+* [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/https:/)
+* [Laravel](https://laravel.com/docs/9.x/installationhttps:/)
 
-## Laravel Sponsors
+#### Como Executar
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+* Clone o projeto `git clone https://github.com/genaro94/api-inicie-educacao.git`
+* Digite o `composer install` no terminal do projeto. Ele vai instalar todos os pacotes php necessários
+* Digite o `php artisan key:generate`. Esse vai gerar uma chave para sua aplicação. Sem isso o Laravel não vai funcionar
+* Digite o `docker-compose up -d`. Ele vai subir todos as imagens necessárias e rodar o projeto.
+* Verifique os nomes das imagens com `docker ps`
+* Acesse a imagem da aplicação com `docker exec -it api-inicie-educacao_laravel-app_1 bash`. Onde o api-inicie-educacao_laravel-app_1 é o nome da imagem
+* Crie o link simbólico com `ln -s public html`
+* Gere as migrates com `php artisan migrate:refresh --seed`. Ele vai criar todas as tabelas necessárias no database
 
-### Premium Partners
+Pronto, após seguir o passo a passo só precisará acessar o link [localhost:8080](https://[localhost:8080]) no seu navegador e começar a usar a aplicação.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu terminal.
 
-## Contributing
+### CheckList da API
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* [X] Criar um novo usuário dentro do sistema;
+* [X] Listar todos os usuários da API e encontrar o usuário criado através do ID do mesmo;
+* [X] Criar um novo post para o usuário criado;
+* [X] Criar um novo comentário dentro do post criado;
+* [X] Criar um novo comentário dentro do primeiro post da lista pública de posts;
+* [X] Apagar o comentário criado no requisito acima;
+* [X] Listagem do posts de um usuário;
 
-## Code of Conduct
+### Rotas Disponíveis
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<table>
+	<thead>
+		<th>Description</th>
+		<th>Method</th>
+		<th>Url</th>
+		<th>QueryString</th>
+		<th>Body</th>
+		<th>Response</th>
+	</thead>
+	<tbody>
+    	<tr>
+			<td>Criar Usuário</td>
+			<td>POST</td>
+			<td>api/users</td>
+			<td>none</td>
+			<td>
+                <pre>
+{
+    "name": "Maria Mehrotra Silva",
+    "email": "maria@email.com.br",
+    "gender": "female",
+    "status": "active"
+}
+                </pre>
+            </td>
+			<td>
+				<pre>
+{
+    "code": 201,
+    "meta": null,
+    "data": {
+        "id": 5862,
+        "name": "Maria Mehrotra Silva",
+        "email": "maria@email.com.br",
+        "gender": "female",
+        "status": "active"
+    }
+}
+				</pre>
+			</td>
+		</tr>
+    	<tr>
+			<td>Listar Todos Usuários</td>
+			<td>GET</td>
+			<td>api/users/{user_id?}</td>
+			<td>none</td>
+			<td>
+               none
+            </td>
+			<td>
+				<pre>
+{
+    "code": 200,
+    "meta": {
+        "pagination": {
+            "total": 2241,
+            "pages": 225,
+            "page": 1,
+            "limit": 10
+        }
+    },
+    "data": [
+        {
+            "id": 2303,
+            "name": "Msgr. Chitraksh Rana",
+            "email": "chitraksh_msgr_rana@fay.name",
+            "gender": "male",
+            "status": "active"
+        },
+        {
+            "id": 2302,
+            "name": "Bhoopat Bharadwaj I",
+            "email": "bharadwaj_bhoopat_i@ward.info",
+            "gender": "male",
+            "status": "active"
+        },
+    ]
+}
+				</pre>
+			</td>
+		</tr>
+        <tr>
+			<td>Criar Post para o Usuário</td>
+			<td>POST</td>
+			<td>api/users/{user_id}/posts</td>
+			<td>none</td>
+			<td>
+                <pre>
+{
+    "title": "Title de Exemplo",
+    "body": "Body de Exemplo"
+}
+                </pre>
+            </td>
+			<td>
+				<pre>
+{
+    "code": 201,
+    "meta": null,
+    "data": {
+        "id": 1487,
+        "user_id": 370,
+        "title": "Title de Exemplo",
+        "body": "Body de Exemplo"
+    }
+}
+				</pre>
+			</td>
+		</tr>
+        <tr>
+			<td>Criar Comentário dentro do Post Criado</td>
+			<td>POST</td>
+			<td>api/posts/{post_id}/comments</td>
+			<td>none</td>
+			<td>
+                <pre>
+{
+    "name": "Maria da Conceição",
+    "email": "maria@email.com",
+    "body": "body exemple"
+}
+                </pre>
+            </td>
+			<td>
+				<pre>
+{
+    "code": 201,
+    "meta": null,
+    "data": {
+        "id": 1348,
+        "post_id": 1487,
+        "name": "Maria da Conceição",
+        "email": "maria@email.com",
+        "body": "body exemple"
+    }
+}
+				</pre>
+			</td>
+		</tr>
+        <tr>
+			<td>Criar Comentário dentro do Post público</td>
+			<td>POST</td>
+			<td>api/comments/store/list/posts</td>
+			<td>none</td>
+			<td>
+                <pre>
+{
+    "post_id": 1441,
+    "name": "Carson Rempel",
+    "email": "carson@meial.com",
+    "body":  "asdasda"
+}
+                </pre>
+            </td>
+			<td>
+				<pre>
+{
+    "code": 201,
+    "meta": null,
+    "data": {
+        "id": 1350,
+        "post_id": 1441,
+        "name": "Carson Rempel",
+        "email": "carson@meial.com",
+        "body": "asdasda"
+    }
+}
+				</pre>
+			</td>
+		</tr>
+        <tr>
+			<td>Apagar Comentário</td>
+			<td>DELETE</td>
+			<td>api/comments/{comment_id}</td>
+			<td>none</td>
+			<td>
+                none
+            </td>
+			<td>
+                none
+			</td>
+		</tr>
+        <tr>
+			<td>Listagem dos Posts do Usuário</td>
+			<td>GET</td>
+			<td>api/users/{user_id}/posts</td>
+			<td>none</td>
+			<td>
+                none
+            </td>
+			<td>
+                <pre>
+{
+    "code": 200,
+    "meta": {
+        "pagination": {
+            "total": 1,
+            "pages": 1,
+            "page": 1,
+            "limit": 10
+        }
+    },
+    "data": [
+        {
+            "id": 1168,
+            "user_id": 2303,
+            "title": "title example",
+            "body": "body example"
+        }
+    ]
+}
+                </pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+By Genaro Figueiredo 👋

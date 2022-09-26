@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Schema::defaultStringLength(191);
+
         $this->app->bind(
             'App\Http\Interfaces\User\IUserCreation',
             'App\Application\User\UserCreation',
@@ -37,6 +40,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Http\Interfaces\Comment\ICommentCreationListPost',
             'App\Application\Comment\CommentCreationListPost',
+        );
+
+        $this->app->bind(
+            'App\Http\Interfaces\Comment\ICommentDestroy',
+            'App\Application\Comment\CommentDestroy',
+        );
+
+        $this->app->bind(
+            'App\Http\Interfaces\Post\IUserPostListing',
+            'App\Application\Post\UserPostListing',
         );
     }
 }

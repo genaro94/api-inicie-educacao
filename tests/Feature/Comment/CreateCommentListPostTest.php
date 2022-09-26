@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Comment;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
@@ -11,7 +10,6 @@ class CreateCommentListPostTest extends TestCase
     private $token         = '7ba03f2c0a0909bd7c37efaadaa54777c2d0ff1d190878475c8fa953c3399609';
     private $status        = ['active', 'inactive'];
     private $gender        = ['female', 'male'];
-    private $commentStatus = ['completed', 'pending'];
 
     public function test_create_comment_in_post_list_with_success(): void
     {
@@ -23,12 +21,18 @@ class CreateCommentListPostTest extends TestCase
             'status' => Arr::random($this->status),
         ]);
 
+        $post = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->post('/api/users'.'/'. $user['data']['id'] .'/posts', [
+           'title'    => fake()->text(),
+           'body'     => fake()->text()
+        ]);
+
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => $user['data']['id'],
-           'title'    => fake()->text(),
-           'due_on'   => \Carbon\Carbon::today(),
-           'status'   => Arr::random($this->commentStatus),
+           'post_id'  => $post['data']['id'],
+           'name'     => fake()->name(),
+           'email'    => fake()->unique()->email(),
+           'body'     =>  fake()->text(),
         ]);
 
         $response->assertStatus(201)
@@ -39,14 +43,14 @@ class CreateCommentListPostTest extends TestCase
         ]);
     }
 
-    public function test_field_user_id_is_required(): void
+    public function test_field_post_id_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => null,
-           'title'    => fake()->text(),
-           'due_on'   => \Carbon\Carbon::today(),
-           'status'   => Arr::random($this->commentStatus),
+           'post_id'  => null,
+           'name'     => fake()->name(),
+           'email'    => fake()->unique()->email(),
+           'body'     => fake()->text(),
         ]);
 
         $response->assertStatus(422)
@@ -55,25 +59,25 @@ class CreateCommentListPostTest extends TestCase
             'meta'    => null,
             'data'    => [
                 [
-                    "field"   => "user",
+                    "field"   => "post",
                     "message" => "must exist"
                 ],
                 [
-                    "field"   => "user_id",
+                    "field"   => "post_id",
                     "message" => "is not a number"
                 ]
             ]
         ]);
     }
 
-    public function test_field_title_is_required(): void
+    public function test_field_name_comment_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => 2752,
-           'title'    => null,
-           'due_on'   => \Carbon\Carbon::today(),
-           'status'   => Arr::random($this->commentStatus),
+           'post_id'  => 1441,
+           'name'     => null,
+           'email'    => fake()->unique()->email(),
+           'body'     => fake()->text(),
         ]);
 
         $response->assertStatus(422)
@@ -82,21 +86,21 @@ class CreateCommentListPostTest extends TestCase
             'meta'    => null,
             'data'    => [
                 [
-                    "field"   => "title",
+                    "field"   => "name",
                     "message" => "can't be blank"
                 ],
             ]
         ]);
     }
 
-    public function test_field_status_is_required(): void
+    public function test_field_email_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => 2752,
-           'title'    => fake()->text(),
-           'due_on'   => \Carbon\Carbon::today(),
-           'status'   => null,
+           'post_id'  => 1441,
+           'name'     => fake()->name(),
+           'email'    => null,
+           'body'     => fake()->text(),
         ]);
 
         $response->assertStatus(422)
@@ -105,8 +109,8 @@ class CreateCommentListPostTest extends TestCase
             'meta'    => null,
             'data'    => [
                 [
-                    "field"   => "status",
-                    "message" => "can't be blank, can be pending or completed"
+                    "field"   => "email",
+                    "message" => "can't be blank, is invalid"
                 ]
             ]
         ]);
@@ -116,10 +120,10 @@ class CreateCommentListPostTest extends TestCase
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . '123456790')
         ->post('/api/comments/store/list/posts', [
-           'user_id'  => 2752,
-           'title'    => fake()->text(),
-           'due_on'   => \Carbon\Carbon::today(),
-           'status'   => Arr::random($this->commentStatus),
+           'post_id'  => 1441,
+           'name'     => fake()->name(),
+           'email'    => fake()->unique()->email(),
+           'body'     => fake()->text(),
         ]);
 
         $response->assertStatus(401)

@@ -6,5 +6,5 @@ use Illuminate\Http\Request;
 
 interface IPostCreation
 {
-    function execute(Request $request): array;
+    function execute(Request $request, int $id): array;
 }

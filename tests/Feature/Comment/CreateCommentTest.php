@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Comment;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
@@ -23,14 +22,13 @@ class CreateCommentTest extends TestCase
         ]);
 
         $post = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => $user['data']['id'],
+        ->post('/api/users'.'/'. $user['data']['id'] .'/posts', [
            'title'    => fake()->text(),
            'body'     => fake()->text()
         ]);
 
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
+        ->post('/api/posts'.'/'.$post['data']['id'].'/comments', [
            'post_id'  => $post['data']['id'],
            'name'     => fake()->name(),
            'email'    => fake()->email(),
@@ -45,38 +43,10 @@ class CreateCommentTest extends TestCase
         ]);
     }
 
-    public function test_field_post_id_is_required(): void
-    {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
-            'post_id'  => null,
-            'name'     => fake()->name(),
-            'email'    => fake()->email(),
-            'body'     => fake()->text()
-        ]);
-
-        $response->assertStatus(422)
-        ->assertJson([
-            'code'    => 422,
-            'meta'    => null,
-            'data'    => [
-                [
-                    "field"    => "post",
-                    "message"  => "must exist"
-                ],
-                [
-                    "field"    => "post_id",
-                    "message"  => "is not a number"
-                ]
-            ]
-        ]);
-    }
-
     public function test_field_name_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
-            'post_id'  => 1566,
+        ->post('/api/posts/123/comments', [
             'name'     => null,
             'email'    => fake()->name(),
             'body'     => fake()->text()
@@ -98,8 +68,7 @@ class CreateCommentTest extends TestCase
     public function test_field_email_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
-            'post_id'  => 1566,
+        ->post('/api/posts/123/comments', [
             'name'     => fake()->name(),
             'email'    => null,
             'body'     => fake()->text()
@@ -121,8 +90,7 @@ class CreateCommentTest extends TestCase
     public function test_field_email_format_is_valid(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
-            'post_id'  => 1566,
+        ->post('/api/posts/123/comments', [
             'name'     => fake()->name(),
             'email'    => "email.test",
             'body'     => fake()->text()
@@ -144,8 +112,7 @@ class CreateCommentTest extends TestCase
     public function test_field_body_is_required(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
-            'post_id'  => 1566,
+        ->post('/api/posts/123/comments', [
             'name'     => fake()->name(),
             'email'    => fake()->email(),
             'body'     => null
@@ -167,8 +134,7 @@ class CreateCommentTest extends TestCase
     public function test_create_comment_with_token_invalid(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer 1234567890')
-        ->post('/api/comments', [
-            'post_id'  => 1566,
+        ->post('/api/posts/123/comments', [
             'name'     => fake()->name(),
             'email'    => fake()->email(),
             'body'     => fake()->text()
