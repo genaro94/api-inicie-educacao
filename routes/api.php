@@ -14,6 +14,6 @@ Route::group(['prefix' => 'posts'], function () {
 });
 
 Route::group(['prefix' => 'comments'], function () {
-    Route::delete('/{id}', 'CommentController@destroy');
     Route::post('/store/list/posts', 'CommentController@storeListPosts');
+    Route::delete('/{id}', 'CommentController@destroy');
 });
