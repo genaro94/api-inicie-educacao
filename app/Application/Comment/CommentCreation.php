@@ -5,7 +5,6 @@ namespace App\Application\Comment;
 use App\Http\Interfaces\Comment\ICommentCreation;
 use App\Facades\ExternalApiFacade;
 use Illuminate\Http\Request;
-use Exception;
 
 class CommentCreation implements ICommentCreation
 {

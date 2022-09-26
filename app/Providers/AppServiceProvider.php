@@ -38,5 +38,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Http\Interfaces\Comment\ICommentCreationListPost',
             'App\Application\Comment\CommentCreationListPost',
         );
+
+        $this->app->bind(
+            'App\Http\Interfaces\Comment\ICommentDestroy',
+            'App\Application\Comment\CommentDestroy',
+        );
     }
 }
