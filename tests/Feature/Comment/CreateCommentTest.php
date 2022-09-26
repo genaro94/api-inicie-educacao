@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Comment;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 
