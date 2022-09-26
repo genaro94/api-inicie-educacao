@@ -15,9 +15,9 @@ class CommentController extends Controller
                                 private ICommentCreationListPost $commentCreationListPosts,
                                 private ICommentDestroy $commentDestroy) {}
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, int $postId): JsonResponse
     {
-        $response = $this->commentCreation->execute($request);
+        $response = $this->commentCreation->execute($request, $postId);
 
         return response()->json($response, $response['code']);
     }

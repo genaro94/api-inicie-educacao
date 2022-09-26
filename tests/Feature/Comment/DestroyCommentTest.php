@@ -22,14 +22,13 @@ class DestroyCommentTest extends TestCase
         ]);
 
         $post = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/posts', [
-           'user_id'  => $user['data']['id'],
+        ->post('/api/users'.'/'.$user['data']['id'].'/posts', [
            'title'    => fake()->text(),
            'body'     => fake()->text()
         ]);
 
         $comment = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->post('/api/comments', [
+        ->post('/api/posts'.'/'.$post['data']['id'].'/comments', [
            'post_id'  => $post['data']['id'],
            'name'     => fake()->name(),
            'email'    => fake()->email(),

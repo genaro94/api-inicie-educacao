@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 
 class CommentCreation implements ICommentCreation
 {
-    function execute(Request $request): array
+    function execute(Request $request, int $postId): array
     {
         return ExternalApiFacade::withToken($request->bearerToken())
-        ->post('/comments', [
-            'post_id' => $request->post_id,
+        ->post('/posts'.'/'. $postId .'/comments', [
             'name'    => $request->name,
             'email'   => $request->email,
             'body'    => $request->body,
