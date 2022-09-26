@@ -41,4 +41,19 @@ class DestroyCommentTest extends TestCase
 
         $response->assertStatus(204);
     }
+
+    public function test_destroy_comment_does_not_exist(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+        ->delete('/api/comments/120000000000000');
+
+        $response->assertStatus(404)
+        ->assertJson([
+            'code'    => 404,
+            'meta'    => null,
+            'data'    => [
+                'message' => 'Resource not found'
+            ]
+        ]);
+    }
 }
