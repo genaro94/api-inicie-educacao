@@ -93,7 +93,7 @@ Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu termin
     	<tr>
 			<td>Listar Todos Usuários</td>
 			<td>GET</td>
-			<td>api/users/{user_id?}</td>
+			<td>api/users/{user?}</td>
 			<td>none</td>
 			<td>
                none
@@ -133,7 +133,7 @@ Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu termin
         <tr>
 			<td>Criar Post para o Usuário</td>
 			<td>POST</td>
-			<td>api/users/{user_id}/posts</td>
+			<td>api/users/{user}/posts</td>
 			<td>none</td>
 			<td>
                 <pre>
@@ -161,7 +161,7 @@ Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu termin
         <tr>
 			<td>Criar Comentário dentro do Post Criado</td>
 			<td>POST</td>
-			<td>api/posts/{post_id}/comments</td>
+			<td>api/posts/{post}/comments</td>
 			<td>none</td>
 			<td>
                 <pre>
@@ -234,7 +234,7 @@ Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu termin
         <tr>
 			<td>Listagem dos Posts do Usuário</td>
 			<td>GET</td>
-			<td>api/users/{user_id}/posts</td>
+			<td>api/users/{user}/posts</td>
 			<td>none</td>
 			<td>
                 none
