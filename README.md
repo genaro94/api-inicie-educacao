@@ -222,7 +222,7 @@ Caso deseje executar os testes basta executar `vendor/bin/phpunit` em seu termin
         <tr>
 			<td>Apagar Comentário</td>
 			<td>DELETE</td>
-			<td>api/comments/{comment_id}</td>
+			<td>api/comments/{comment}</td>
 			<td>none</td>
 			<td>
                 none
